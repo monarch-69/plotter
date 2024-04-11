@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Plotter</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            color: #ffcc00;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"], select, button {
+            background-color: #555;
+            color: #fff;
+            border: 1px solid #777;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button {
+            cursor: pointer;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+        }
+        .error {
+            color: #ff3333;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload CSV File</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <br><br>
+            <label for="graph_type">Select graph type:</label>
+            <select name="graph_type" id="graph_type">
+                <option value="line">Line</option>
+                <option value="bar">Bar</option>
+                <option value="scatter">Scatter</option>
+            </select>
+            <br><br>
+            <button type="submit">Plot</button>
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if plot_data %}
+            <h2>Plot</h2>
+            <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
+        {% endif %}
+    </div>
+</body>
+</html>
+
