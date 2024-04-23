@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -51,6 +51,17 @@ def index():
         plot_data = generate_plot(df, graph_type)
         return render_template('index.html', plot_data=plot_data)
     return render_template('index.html')
+
+@app.route('/download_plot')
+def download_plot():
+    # Get plot data from query parameters
+    plot_data = request.args.get('plot_data')
+    # Decode plot data from base64
+    plot_bytes = base64.b64decode(plot_data)
+    # Create a BytesIO buffer
+    buffer = BytesIO(plot_bytes)
+    # Return the plot as a file attachment
+    return send_file(buffer, as_attachment=True, mimetype='image/png', download_name='plot.png')
 
 if __name__ == '__main__':
     app.run(debug=True)

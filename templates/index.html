@@ -4,7 +4,7 @@
     <title>CSV Plotter</title>
     <style>
         body {
-            background-color: #222;
+            background-color: #181f21;
             color: #fff;
             font-family: Arial, sans-serif;
             display: flex;
@@ -48,10 +48,28 @@
             color: #ff3333;
             margin-top: 10px;
         }
+        .flex {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        } 
     </style>
 </head>
-<body>
-    <div class="container">
+<body class="flex">
+
+    <div>
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+             </div>
+         </nav>
+    </div>
+
+        <div class="container">
         <h1>Upload CSV File</h1>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="file">
@@ -64,6 +82,7 @@
             </select>
             <br><br>
             <button type="submit">Plot</button>
+        
         </form>
         {% if error %}
             <p class="error">{{ error }}</p>
@@ -72,6 +91,22 @@
             <h2>Plot</h2>
             <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
         {% endif %}
+
+        <!--
+        {% if plot_data %}
+            <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
+            <a href="{{ url_for('download_plot', plot_data=plot_data) }}" download="plot.png">Download Plot</a>
+        {% endif %}
+        -->
+        
+        {% if plot_data %}
+            <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
+            <form action="{{ url_for('download_plot') }}" method="get">
+            <input type="hidden" name="plot_data" value="{{ plot_data }}">
+            <button type="submit">Download Plot</button>
+            </form>
+        {% endif %}
+
     </div>
 </body>
 </html>
