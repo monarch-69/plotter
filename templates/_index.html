@@ -2,25 +2,22 @@
 <html>
 <head>
     <title>CSV Plotter</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #33B864; /* Background color */
+            background-color: #181f21;
             color: #fff;
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding-top: 50px; /* Adjusted padding to accommodate detached navbar */
             display: flex;
-            flex-direction: column;
-            align-items: center; /* Center horizontally */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
             background-color: #333;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             text-align: center;
-            margin-top: 300px; /* Add space between navbar and container */
-            width: 1000px;
         }
         h1 {
             color: #ffcc00;
@@ -51,39 +48,28 @@
             color: #ff3333;
             margin-top: 10px;
         }
-        .navbar {
-            background-color: #333; /* Navbar color */
-            padding: 15px 20px; /* Increased padding */
-            /*width: calc(100% - 200px); /* Increased width */
-            width: 1000px;
-            border-radius: 10px;
-            position: fixed; /* Fixed position to detach */
-            top: 20; /* Placed at the top */
-            z-index: 999; /* Ensure it's above other content */
+        .flex {
+            height: 70vh;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center; /* Center horizontally */
-        }
-        .navbar .navbar-brand {
-            color: #fff;
-            font-size: 24px;
-        }
-        .search-icon {
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-        }
+        } 
     </style>
 </head>
-<body>
+<body class="flex">
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <a class="navbar-brand" href="#">CSV Plotter</a>
-        <span class="search-icon">&#x1F50D;</span> <!-- Search symbol -->
-    </nav>
+    <div>
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+             </div>
+         </nav>
+    </div>
 
-    <div class="container">
+        <div class="container">
         <h1>Upload CSV File</h1>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="file">
@@ -96,6 +82,7 @@
             </select>
             <br><br>
             <button type="submit">Plot</button>
+        
         </form>
         {% if error %}
             <p class="error">{{ error }}</p>
@@ -104,15 +91,23 @@
             <h2>Plot</h2>
             <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
         {% endif %}
+
+        <!--
+        {% if plot_data %}
+            <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
+            <a href="{{ url_for('download_plot', plot_data=plot_data) }}" download="plot.png">Download Plot</a>
+        {% endif %}
+        -->
+        
         {% if plot_data %}
             <img src="data:image/png;base64,{{ plot_data }}" alt="Plot">
             <form action="{{ url_for('download_plot') }}" method="get">
-                <input type="hidden" name="plot_data" value="{{ plot_data }}">
-                <button type="submit">Download Plot</button>
+            <input type="hidden" name="plot_data" value="{{ plot_data }}">
+            <button type="submit">Download Plot</button>
             </form>
         {% endif %}
-    </div>
 
+    </div>
 </body>
 </html>
 
