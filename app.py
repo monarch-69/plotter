@@ -11,8 +11,7 @@ app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
 # Initialize DynamoDB client
-dynamodb = boto3.client('dynamodb',   
-                        region_name='us-east-2')
+dynamodb = boto3.client()
 
 # DynamoDB table name
 TABLE_NAME = 'Users'
